@@ -4,24 +4,25 @@ class Participant:
         self.points = 0
         self.choice = ""
     def choose(self):
-        self.choice = input("{name}, select r, p or s: ".format(name = self.name))
-        print("{name} chooses {choice}".format(name = self.name, choice = self.choice))
+        self.choice = input("{name}, select r, p, sc, l or sp: ".format(name = self.name))
+        choiceconv = {"r": "rock", "p": "paper", "sc": "scissors", "l": "lizard", "sp": "spock"}
+        print("{name} chooses {choice}".format(name = self.name, choice = choiceconv[self.choice]))
     def tonumericalchoice(self):
-        switcher = {"r": 0, "p": 1, "s": 2}
+        switcher = {"r": 0, "p": 1, "sc": 2, "l": 3, "sp": 4}
         return switcher[self.choice]
     def incrementpoints(self):
         self.points += 1
 
 class GameRound:
     def __init__(self, p1, p2):
-        self.rules = [[0, -1, 1], [1, 0, -1], [-1, 1, 0]]
+        self.rules = [[0, -1, 1, 1, -1], [1, 0, -1, -1, 1], [-1, 1, 0, 1, -1], [-1, 1, -1, 0, 1], [1, -1, 1, -1, 0]]
         p1.choose()
         p2.choose()
         result = self.comparechoices(p1, p2)
         print("Round resulted in a {result}".format(result = self.getresultasastring(result)))
         if result > 0:
             p1.incrementpoints()
-        elif result <0:
+        elif result < 0:
             p2.incrementpoints()
     def comparechoices(self, p1, p2):
         return self.rules[p1.tonumericalchoice()][p2.tonumericalchoice()]
